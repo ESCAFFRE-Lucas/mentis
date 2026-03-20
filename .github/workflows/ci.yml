@@ -2,9 +2,9 @@ name: Mentis CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   quality-gate:
@@ -50,6 +50,6 @@ jobs:
       - name: Vérification de la compilation
         run: pnpm run build
         env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
-          BETTER_AUTH_SECRET: "ci-test-secret-key"
-          BETTER_AUTH_URL: "http://localhost:5173"
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
+          BETTER_AUTH_SECRET: 'ci-test-secret-key'
+          BETTER_AUTH_URL: 'http://localhost:5173'
