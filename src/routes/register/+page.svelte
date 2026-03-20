@@ -7,6 +7,7 @@
 	import { signUp } from '$lib/auth-client';
 	import { goto } from '$app/navigation';
 	import type { PageServerLoad } from './$types';
+	import { resolve } from '$app/paths';
 
 	type PageProps = {
 		data: PageServerLoad;
@@ -28,7 +29,7 @@
 				if (error) {
 					form.message = "Erreur lors de l'inscription. L'email est peut-être déjà utilisé.";
 				} else {
-					await goto('/');
+					await goto(resolve('/'));
 				}
 			}
 		}
