@@ -41,13 +41,13 @@ jobs:
       - name: Installation des dépendances
         run: pnpm install --frozen-lockfile
 
-      - name: Vérification de la syntaxe (Linter)
+      - name: Vérification de la syntaxe
         run: pnpm run lint
 
-      - name: Exécution des tests unitaires (Vitest)
+      - name: Exécution des tests unitaires
         run: pnpm exec vitest run
 
-      - name: Vérification de la compilation (SvelteKit Build)
+      - name: Vérification de la compilation
         run: pnpm run build
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
