@@ -2,16 +2,21 @@
     import * as Form from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input";
     import { superForm } from "sveltekit-superforms";
-    import { zodClient } from "sveltekit-superforms/adapters";
-    import { formSchema } from "./schema";
+    import { zod4Client } from "sveltekit-superforms/adapters";
+    import { registerSchema } from "./schema";
     import { signUp } from "$lib/auth-client";
     import { goto } from "$app/navigation";
+    import type {PageServerLoad} from "./$types";
 
-    let { data } = $props();
+    type PageProps = {
+        data: PageServerLoad
+    }
+
+    let { data }: PageProps = $props();
 
     const form = superForm(data.form, {
         SPA: true,
-        validators: zodClient(formSchema),
+        validators: zod4Client(registerSchema),
         async onUpdate({ form }) {
             if (form.valid) {
                 const { error } = await signUp.email({
