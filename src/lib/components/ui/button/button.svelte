@@ -64,7 +64,6 @@
 	}: ButtonProps = $props();
 </script>
 
-/* eslint-disable */
 {#if href}
 	<a
 		bind:this={ref}
