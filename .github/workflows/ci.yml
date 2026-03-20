@@ -42,7 +42,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Vérification de la syntaxe
-        run: pnpm run lint
+        run: pnpm exec prettier --write . && pnpm run lint
 
       - name: Installation des navigateurs Playwright
         run: pnpm exec playwright install --with-deps chromium
