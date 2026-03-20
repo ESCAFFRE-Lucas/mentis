@@ -8,6 +8,10 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema: schema
 	}),
+	trustedOrigins: [
+		"https://mentis.lucesf.com",
+		"http://localhost:5173"
+	],
 	emailAndPassword: {
 		enabled: true
 	}
