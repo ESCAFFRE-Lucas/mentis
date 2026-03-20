@@ -8,15 +8,3 @@ export const load = async () => {
         form: await superValidate(zod4(registerSchema))
     };
 };
-
-export const actions = {
-    default: async ({ request }) => {
-        const form = await superValidate(request, zod4(registerSchema));
-        console.log(form);
-
-        if (!form.valid) {
-            return fail(400, { form });
-        }
-        return message(form, 'Form posted successfully!');
-    }
-};

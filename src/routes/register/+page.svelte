@@ -47,7 +47,7 @@
             </div>
         {/if}
 
-        <form method="POST" class="space-y-4">
+        <form method="POST" use:enhance class="space-y-4">
             <Form.Field {form} name="name">
                 <Form.Control>
                     {#snippet children({ props })}
