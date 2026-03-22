@@ -33,23 +33,35 @@
 							{user.name ? user.name.charAt(0).toUpperCase() : 'U'}
 						</div>
 					</DropdownMenu.Trigger>
-					<DropdownMenu.Content align="end">
-						<DropdownMenu.Label class="font-normal">
-							<div class="flex flex-col space-y-1">
-								<p class="text-sm font-medium leading-none">{user.name}</p>
-								<p class="text-xs leading-none text-zinc-500">{user.email}</p>
+
+					<DropdownMenu.Content align="end" class="w-64 p-2">
+						<DropdownMenu.Label class="font-normal p-2">
+							<div class="flex flex-col space-y-2">
+								<p class="text-sm font-medium leading-none truncate">
+									{user.name}
+								</p>
+								<p class="text-xs leading-none text-zinc-500 truncate">
+									{user.email}
+								</p>
 							</div>
 						</DropdownMenu.Label>
+
 						<DropdownMenu.Separator />
-						<DropdownMenu.Item>
+
+						<DropdownMenu.Item class="cursor-pointer p-2">
 							{#snippet child({ props })}
 								<a href="/profil" {...props} class="w-full">
 									Mon Profil
 								</a>
 							{/snippet}
 						</DropdownMenu.Item>
+
 						<DropdownMenu.Separator />
-						<DropdownMenu.Item onclick={handleLogout} class="text-red-600 focus:text-red-600">
+
+						<DropdownMenu.Item
+							onclick={handleLogout}
+							class="cursor-pointer p-2 text-red-600 focus:bg-red-50 focus:text-red-700"
+						>
 							Se déconnecter
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
