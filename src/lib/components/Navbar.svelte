@@ -34,9 +34,9 @@
 						</div>
 					</DropdownMenu.Trigger>
 
-					<DropdownMenu.Content align="end" class="w-64 p-2">
-						<DropdownMenu.Label class="font-normal p-2">
-							<div class="flex flex-col space-y-2">
+					<DropdownMenu.Content align="end" class="w-64">
+						<DropdownMenu.Label class="font-normal">
+							<div class="flex flex-col space-y-1">
 								<p class="text-sm font-medium leading-none truncate">
 									{user.name}
 								</p>
@@ -48,9 +48,9 @@
 
 						<DropdownMenu.Separator />
 
-						<DropdownMenu.Item class="cursor-pointer p-2">
+						<DropdownMenu.Item class="cursor-pointer">
 							{#snippet child({ props })}
-								<a href="/profil" {...props} class="w-full">
+								<a href="/profil" {...props}>
 									Mon Profil
 								</a>
 							{/snippet}
@@ -60,7 +60,7 @@
 
 						<DropdownMenu.Item
 							onclick={handleLogout}
-							class="cursor-pointer p-2 text-red-600 focus:bg-red-50 focus:text-red-700"
+							class="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-700"
 						>
 							Se déconnecter
 						</DropdownMenu.Item>
