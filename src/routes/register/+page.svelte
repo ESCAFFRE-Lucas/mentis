@@ -53,7 +53,7 @@
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>Nom d'utilisateur</Form.Label>
-						<Input {...props} bind:value={$formData.name} placeholder="John Doe" />
+						<Input {...props} bind:value={$formData.name} placeholder="Votre nom d'utilisateur." />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
@@ -63,7 +63,7 @@
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>Email professionnel</Form.Label>
-						<Input {...props} bind:value={$formData.email} placeholder="john@entreprise.com" />
+						<Input {...props} bind:value={$formData.email} placeholder="votreemail@email.com" />
 					{/snippet}
 				</Form.Control>
 				<Form.FieldErrors />
