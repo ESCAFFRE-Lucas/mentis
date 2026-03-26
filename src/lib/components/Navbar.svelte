@@ -23,7 +23,7 @@
 
 		<div class="flex items-center gap-4">
 			{#if user}
-				<Button href="/news/new" variant="outline" class="hidden sm:flex">
+				<Button href="/article/new" variant="outline" class="hidden sm:flex">
 					Créer un article
 				</Button>
 
