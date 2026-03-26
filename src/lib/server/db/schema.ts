@@ -59,3 +59,16 @@ export const verification = pgTable('verification', {
 	createdAt: timestamp('createdAt'),
 	updatedAt: timestamp('updatedAt')
 });
+
+export const article = pgTable('article', {
+	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+
+	title: text('title').notNull(),
+	excerpt: text('excerpt').notNull(),
+	content: text('content').notNull(),
+
+	authorId: text('authorId').notNull().references(() => user.id, { onDelete: 'cascade' }),
+
+	createdAt: timestamp('createdAt').defaultNow().notNull(),
+	updatedAt: timestamp('updatedAt').defaultNow().notNull()
+});
