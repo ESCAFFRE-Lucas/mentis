@@ -7,6 +7,7 @@ on:
     branches: ['main']
 
 jobs:
+  # 🛡️ JOB 1 : La porte de sécurité (Quality Gate)
   quality-gate:
     name: Lint, Test & Build
     runs-on: ubuntu-latest
@@ -56,3 +57,24 @@ jobs:
           DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres'
           BETTER_AUTH_SECRET: 'ci-test-secret-key'
           BETTER_AUTH_URL: 'http://localhost:5173'
+
+  notify:
+    name: Notification Discord
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Envoyer le message Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "Mise à jour de Mentis !",
+              "description": "Nouvelle version de mentis est en production !\n\n **[Voir le site en production](https://mentis.lucesf.com)**",
+              "color": 3066993,
+              "footer": {
+                "text": "Mentis CI/CD Pipeline"
+              }
+            }]
+          }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
