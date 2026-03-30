@@ -3,7 +3,6 @@ import { describe, it, expect, afterEach } from 'vitest';
 import ArticleCard from './ArticleCard.svelte';
 
 describe('Composant ArticleCard', () => {
-
 	afterEach(() => {
 		cleanup();
 	});
@@ -18,7 +17,7 @@ describe('Composant ArticleCard', () => {
 		commentsCount: 7
 	};
 
-	it('1. Doit afficher correctement le contenu texte de l\'article', () => {
+	it("1. Doit afficher correctement le contenu texte de l'article", () => {
 		render(ArticleCard, { props: { article: mockArticle } });
 
 		expect(screen.getByText('Pourquoi Svelte 5 change la donne')).toBeTruthy();
@@ -30,7 +29,9 @@ describe('Composant ArticleCard', () => {
 	it('2. Doit générer le bon lien de redirection', () => {
 		render(ArticleCard, { props: { article: mockArticle } });
 
-		const link = screen.getByRole('link', { name: 'Pourquoi Svelte 5 change la donne' }) as HTMLAnchorElement;
+		const link = screen.getByRole('link', {
+			name: 'Pourquoi Svelte 5 change la donne'
+		}) as HTMLAnchorElement;
 
 		expect(link.getAttribute('href')).toBe('/article/tech-123');
 	});

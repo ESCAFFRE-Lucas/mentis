@@ -10,13 +10,13 @@ export const load: PageServerLoad = async (event) => {
 			title: article.title,
 			excerpt: article.excerpt,
 			createdAt: article.createdAt,
-			authorName: user.name,
+			authorName: user.name
 		})
 		.from(article)
 		.innerJoin(user, eq(article.authorId, user.id))
 		.orderBy(desc(article.createdAt));
 
-	const articles = rawArticles.map(a => ({
+	const articles = rawArticles.map((a) => ({
 		id: a.id,
 		title: a.title,
 		excerpt: a.excerpt,

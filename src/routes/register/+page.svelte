@@ -89,9 +89,7 @@
 		</form>
 		<div class="mt-4 text-center text-sm text-zinc-600">
 			Déjà un compte ?
-			<a href="/login" class="font-medium text-blue-600 hover:underline">
-				Connectez-vous
-			</a>
+			<a href="/login" class="font-medium text-blue-600 hover:underline"> Connectez-vous </a>
 		</div>
 	</div>
 </div>
