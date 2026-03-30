@@ -33,7 +33,7 @@ describe('Login Schema Validation', () => {
 		expect(result.success).toBe(false);
 
 		if (!result.success) {
-			expect(result.error.issues[0].message).toBe("Le mot de passe est requis");
+			expect(result.error.issues[0].message).toBe('Le mot de passe est requis');
 		}
 	});
 });

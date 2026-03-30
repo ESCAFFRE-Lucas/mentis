@@ -7,7 +7,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { LayoutData } from '../../.svelte-kit/types/src/routes/$types';
 	import type { Snippet } from 'svelte';
-	import { page } from "$app/state";
+	import { page } from '$app/state';
 
 	injectSpeedInsights();
 
@@ -15,19 +15,17 @@
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-	let hideNavbar = $derived(
-		page.url.pathname === '/login' || page.url.pathname === '/register'
-	);
+	let hideNavbar = $derived(page.url.pathname === '/login' || page.url.pathname === '/register');
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<div class="min-h-screen bg-zinc-50 flex flex-col">
+<div class="flex min-h-screen flex-col bg-zinc-50">
 	{#if !hideNavbar}
 		<Navbar user={data.user} />
 	{/if}
 
-	<main class="flex-1 container mx-auto max-w-5xl p-4">
+	<main class="container mx-auto max-w-5xl flex-1 p-4">
 		{@render children()}
 	</main>
 </div>

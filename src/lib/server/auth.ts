@@ -8,17 +8,14 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema: schema
 	}),
-	trustedOrigins: [
-		"https://mentis.lucesf.com",
-		"http://localhost:5173"
-	],
+	trustedOrigins: ['https://mentis.lucesf.com', 'http://localhost:5173'],
 	emailAndPassword: {
 		enabled: true
 	},
 	socialProviders: {
 		github: {
 			clientId: process.env.GITHUB_CLIENT_ID as string,
-			clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+			clientSecret: process.env.GITHUB_CLIENT_SECRET as string
 		}
 	}
 });
