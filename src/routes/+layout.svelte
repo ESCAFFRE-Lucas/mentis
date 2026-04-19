@@ -8,6 +8,7 @@
 	import type { LayoutData } from '../../.svelte-kit/types/src/routes/$types';
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	injectSpeedInsights();
 
@@ -26,6 +27,8 @@
 	{/if}
 
 	<main class="container mx-auto max-w-5xl flex-1 p-4">
+		<Toaster richColors position="bottom-right" />
+
 		{@render children()}
 	</main>
 </div>

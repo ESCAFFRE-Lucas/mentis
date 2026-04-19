@@ -1,10 +1,27 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { page } from '$app/state';
 	import * as Avatar from '$lib/components/ui/avatar';
+	import { toast } from 'svelte-sonner';
+	import { superForm } from 'sveltekit-superforms';
+	import { goto } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 
 	const article = data.article;
+
+	const user = $derived(page.data.user);
+
+	const { form, enhance } = superForm(data.form, {
+		applyAction: true,
+		onResult: ({ result }) => {
+			if (result.type === 'redirect') {
+				toast.success("L'article a été supprimé avec succès !");
+
+				goto(result.location);
+			}
+		}
+	});
 </script>
 
 <div class="mx-auto max-w-3xl px-4 py-12">
@@ -14,6 +31,27 @@
 
 	{#if article}
 		<article>
+			{#if user && user.id === article.authorId}
+				<div class="flex justify-end gap-3 mb-8 border-b border-zinc-100 pb-4">
+					<a
+						href="/article/{article.id}/edit"
+						class="px-4 py-2 text-sm font-medium bg-zinc-100 hover:bg-zinc-200 text-zinc-900 rounded-md transition-all"
+					>
+						Modifier
+					</a>
+
+					<form
+						method="POST"
+						action="?/deleteArticle"
+						use:enhance
+						>
+						<button class="px-4 py-2 text-sm font-medium bg-red-50 hover:bg-red-100 text-red-600 rounded-md transition-all border border-red-100">
+							Supprimer
+						</button>
+					</form>
+				</div>
+			{/if}
+
 			<header class="mb-8">
 				<h1 class="mb-4 text-4xl font-extrabold tracking-tight text-zinc-900 md:text-5xl">
 					{article.title}
@@ -48,7 +86,5 @@
 				{/each}
 			</div>
 		</article>
-	{:else}
-		<p class="text-center text-zinc-500">Chargement de l'article...</p>
 	{/if}
 </div>

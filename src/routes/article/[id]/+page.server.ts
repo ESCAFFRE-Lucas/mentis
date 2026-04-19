@@ -1,10 +1,13 @@
 import { db } from '$lib/server/db';
 import { article, user } from '$lib/server/db/schema';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
+import { deleteArticleSchema } from './schema';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
 	const articleId = params.id;
 
 	const result = await db
@@ -13,6 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			title: article.title,
 			content: article.content,
 			createdAt: article.createdAt,
+			authorId: article.authorId,
 			authorName: user.name
 		})
 		.from(article)
@@ -24,7 +28,39 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, 'Article non trouvé');
 	}
 
+	const form = await superValidate({ id: result[0].id }, zod4(deleteArticleSchema));
+
 	return {
-		article: result[0]
+		article: result[0],
+		user: locals.user,
+		form
 	};
+};
+
+export const actions: Actions = {
+	deleteArticle: async ({ params, locals }) => {
+		const session = locals.user;
+
+		if (!session) {
+			throw error(401, 'Vous devez être connecté pour supprimer un article');
+		}
+
+		const [targetArticle] = await db
+			.select()
+			.from(article)
+			.where(eq(article.id, params.id))
+			.limit(1);
+
+		if (!targetArticle) {
+			throw error(404, 'Article introuvable');
+		}
+
+		if (targetArticle.authorId !== session.id) {
+			throw error(403, 'Vous n’avez pas le droit de supprimer cet article');
+		}
+
+		await db.delete(article).where(eq(article.id, params.id));
+
+		throw redirect(303, '/');
+	}
 };
