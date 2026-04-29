@@ -15,7 +15,12 @@
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-	let hideNavbar = $derived(page.url.pathname === '/login' || page.url.pathname === '/register');
+	let hideNavbar = $derived(
+		page.url.pathname === '/login' ||
+			page.url.pathname === '/register' ||
+			page.url.pathname === '/forgot-password' ||
+			page.url.pathname === '/reset-password'
+	);
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>

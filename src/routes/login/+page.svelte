@@ -101,6 +101,11 @@
 			</Button>
 		</form>
 		<div class="mt-4 text-center text-sm text-zinc-600">
+			<a href="/forgot-password" class="font-medium text-zinc-500 hover:underline">
+				Mot de passe oublié ?
+			</a>
+		</div>
+		<div class="mt-2 text-center text-sm text-zinc-600">
 			Pas encore de compte ?
 			<a href="/register" class="font-medium text-blue-600 hover:underline"> S'inscrire </a>
 		</div>
