@@ -51,6 +51,12 @@
 
 						<DropdownMenu.Item class="cursor-pointer">
 							{#snippet child({ props })}
+								<a href="/mes-articles" {...props}> Mes articles </a>
+							{/snippet}
+						</DropdownMenu.Item>
+
+						<DropdownMenu.Item class="cursor-pointer">
+							{#snippet child({ props })}
 								<a href="/profil" {...props}> Mon Profil </a>
 							{/snippet}
 						</DropdownMenu.Item>

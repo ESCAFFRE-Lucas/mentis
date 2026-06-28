@@ -14,6 +14,7 @@ export const load: PageServerLoad = async (event) => {
 		})
 		.from(article)
 		.innerJoin(user, eq(article.authorId, user.id))
+		.where(eq(article.status, 'ACCEPTED'))
 		.orderBy(desc(article.createdAt));
 
 	const articles = rawArticles.map((a) => ({

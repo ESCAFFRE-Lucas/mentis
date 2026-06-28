@@ -1,4 +1,14 @@
-import { pgTable, text, integer, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, text, integer, timestamp, boolean, pgEnum } from 'drizzle-orm/pg-core';
+
+export const articleStatusEnum = pgEnum('article_status', [
+	'DRAFT',
+	'SUBMITTED',
+	'UNDER_REVIEW',
+	'ACCEPTED',
+	'REJECTED'
+]);
+
+export const reviewDecisionEnum = pgEnum('review_decision', ['ACCEPT', 'REVISIONS', 'REJECT']);
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -69,10 +79,31 @@ export const article = pgTable('article', {
 	excerpt: text('excerpt').notNull(),
 	content: text('content').notNull(),
 
+	status: articleStatusEnum('status').default('DRAFT').notNull(),
+
 	authorId: text('authorId')
 		.notNull()
 		.references(() => user.id, { onDelete: 'cascade' }),
 
 	createdAt: timestamp('createdAt').defaultNow().notNull(),
 	updatedAt: timestamp('updatedAt').defaultNow().notNull()
+});
+
+export const review = pgTable('review', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+
+	articleId: text('articleId')
+		.notNull()
+		.references(() => article.id, { onDelete: 'cascade' }),
+
+	reviewerId: text('reviewerId')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+
+	decision: reviewDecisionEnum('decision').notNull(),
+	comment: text('comment').notNull(),
+
+	createdAt: timestamp('createdAt').defaultNow().notNull()
 });
