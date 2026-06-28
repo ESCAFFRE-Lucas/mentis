@@ -26,6 +26,8 @@
 	{/if}
 
 	<main class="container mx-auto max-w-5xl flex-1 p-4">
-		{@render children()}
+		{#key page.url.pathname}
+			{@render children()}
+		{/key}
 	</main>
 </div>

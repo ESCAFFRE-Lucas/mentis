@@ -18,7 +18,7 @@
 		</div>
 		<a
 			href="/article/new"
-			class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+			class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
 		>
 			Créer un article
 		</a>
