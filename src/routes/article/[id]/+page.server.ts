@@ -1,7 +1,7 @@
 import { db } from '$lib/server/db';
-import { article, user } from '$lib/server/db/schema';
+import { article, user, review } from '$lib/server/db/schema';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -26,8 +26,22 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		throw error(404, 'Article non trouvé');
 	}
 
+	const reviews = await db
+		.select({
+			id: review.id,
+			decision: review.decision,
+			comment: review.comment,
+			createdAt: review.createdAt,
+			reviewerName: user.name
+		})
+		.from(review)
+		.innerJoin(user, eq(review.reviewerId, user.id))
+		.where(eq(review.articleId, articleId))
+		.orderBy(desc(review.createdAt));
+
 	return {
 		article: result[0],
+		reviews,
 		user: locals.user
 	};
 };

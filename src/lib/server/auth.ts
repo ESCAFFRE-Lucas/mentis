@@ -17,5 +17,19 @@ export const auth = betterAuth({
 			clientId: process.env.GITHUB_CLIENT_ID as string,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET as string
 		}
+	},
+	user: {
+		additionalFields: {
+			role: {
+				type: 'string',
+				defaultValue: 'USER',
+				required: true
+			},
+			reputationScore: {
+				type: 'number',
+				defaultValue: 0,
+				required: true
+			}
+		}
 	}
 });
