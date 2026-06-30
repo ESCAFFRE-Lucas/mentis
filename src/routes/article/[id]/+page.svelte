@@ -59,9 +59,9 @@
 				</div>
 			</header>
 			<div class="prose max-w-none">
-				{#each article.content.split('\n') as p}
-					{#if p.trim()}
-						<p class="text-zinc-700 mb-4">{p}</p>
+				{#each article.content.split('\n') as paragraph, i (i)}
+					{#if paragraph.trim()}
+						<p class="text-zinc-700 mb-4">{paragraph}</p>
 					{/if}
 				{/each}
 			</div>
