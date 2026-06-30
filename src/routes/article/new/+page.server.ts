@@ -25,18 +25,20 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
+		let newArticleId: string;
 		try {
-			await db.insert(article).values({
+			const [inserted] = await db.insert(article).values({
 				title: form.data.title,
 				excerpt: form.data.excerpt,
 				content: form.data.content,
 				authorId: sessionUser.id
-			});
+			}).returning({ id: article.id });
+			newArticleId = inserted.id;
 		} catch (error) {
 			console.error("Erreur d'insertion DB:", error);
 			return fail(500, { form, message: "Erreur lors de la sauvegarde de l'article." });
 		}
 
-		throw redirect(302, '/');
+		throw redirect(302, `/article/${newArticleId}`);
 	}
 };

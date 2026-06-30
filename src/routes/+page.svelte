@@ -6,33 +6,24 @@
 </script>
 
 <div class="mb-8">
-	<h1 class="text-3xl font-bold tracking-tight text-zinc-900">Fil d'actualité</h1>
+	<h1 class="text-3xl font-bold">Fil d'actualité</h1>
 	<p class="mt-2 text-zinc-500">Découvrez les derniers articles publiés par la communauté.</p>
 </div>
 
 {#if data.user}
-	<div class="mb-8 flex items-center justify-between rounded-xl border bg-white p-6 shadow-sm">
+	<div class="mb-8 flex items-center justify-between border rounded-xl bg-white p-6">
 		<div>
-			<p class="font-medium text-zinc-900">Bonjour {data.user.name} 👋</p>
+			<p class="font-medium">Bonjour {data.user.name} 👋</p>
 			<p class="text-sm text-zinc-500">Prêt à partager quelque chose aujourd'hui ?</p>
 		</div>
-		<a
-			href="/article/new"
-			class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-		>
+		<a href="/article/new" class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
 			Créer un article
 		</a>
 	</div>
 {:else}
 	<div class="mb-8 rounded-xl bg-zinc-100 p-6 text-center">
-		<p class="mb-4 text-zinc-700">
-			Rejoignez la communauté Mentis pour publier et réagir aux articles !
-		</p>
-		<a
-			href="/register"
-			class="inline-block rounded-md bg-zinc-900 px-6 py-2 font-medium text-white transition-colors hover:bg-zinc-800"
-			>S'inscrire</a
-		>
+		<p class="mb-4 text-zinc-700">Rejoignez la communauté Mentis pour publier et réagir aux articles !</p>
+		<a href="/register" class="inline-block rounded-md bg-zinc-900 px-6 py-2 font-medium text-white hover:bg-zinc-800">S'inscrire</a>
 	</div>
 {/if}
 

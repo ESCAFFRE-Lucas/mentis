@@ -8,6 +8,10 @@
 
 	let { user }: { user: User | null | undefined } = $props();
 
+	$effect(() => {
+		console.log('User in Navbar:', user);
+	});
+
 	const handleLogout = async () => {
 		await signOut();
 		await goto('/login');
@@ -25,6 +29,12 @@
 				<Button href="/article/new" variant="outline" class="hidden sm:flex">
 					Créer un article
 				</Button>
+
+				{#if user.role === 'REVIEWER' || user.role === 'ADMIN'}
+					<Button href="/reviewer" variant="outline" class="hidden sm:flex">
+						Interface Reviewer
+					</Button>
+				{/if}
 
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>
