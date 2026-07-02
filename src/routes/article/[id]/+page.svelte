@@ -35,7 +35,7 @@
 						</Avatar.Fallback>
 					</Avatar.Root>
 					<div class="flex-1">
-						<p class="text-sm font-semibold">{article.authorName}</p>
+						<a href="/profil/{article.authorId}" class="text-sm font-semibold hover:text-blue-600 hover:underline">{article.authorName}</a>
 						<p class="text-xs text-zinc-500">
 							{new Date(article.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
 						</p>
