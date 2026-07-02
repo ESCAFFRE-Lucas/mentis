@@ -2,18 +2,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { signOut } from '$lib/auth-client';
-	import { goto } from '$app/navigation';
-
+	import { goto, invalidateAll } from '$app/navigation';
 	import type { User } from 'better-auth';
 
 	let { user }: { user: User | null | undefined } = $props();
 
-	$effect(() => {
-		console.log('User in Navbar:', user);
-	});
-
 	const handleLogout = async () => {
 		await signOut();
+		await invalidateAll();
 		await goto('/login');
 	};
 </script>
@@ -33,6 +29,12 @@
 				{#if user.role === 'REVIEWER' || user.role === 'ADMIN'}
 					<Button href="/reviewer" variant="outline" class="hidden sm:flex">
 						Interface Reviewer
+					</Button>
+				{/if}
+
+				{#if user.role === 'ADMIN'}
+					<Button href="/admin" variant="outline" class="hidden sm:flex">
+						Admin
 					</Button>
 				{/if}
 

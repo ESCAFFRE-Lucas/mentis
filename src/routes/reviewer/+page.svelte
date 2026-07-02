@@ -8,16 +8,8 @@
 	let selectedDecision = $state<'ACCEPT' | 'REVISIONS' | 'REJECT' | null>(null);
 	let comment = $state('');
 
-	const openForm = (id: string) => {
-		selectedArticleId = id;
-		selectedDecision = null;
-		comment = '';
-	};
-	const closeForm = () => {
-		selectedArticleId = null;
-		selectedDecision = null;
-		comment = '';
-	};
+	const openForm = (id: string) => { selectedArticleId = id; selectedDecision = null; comment = ''; };
+	const closeForm = () => { selectedArticleId = null; selectedDecision = null; comment = ''; };
 	const btnClass = (decision: string) => selectedDecision === decision ?
 		`border-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-500 bg-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-50 text-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-700` :
 		'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';

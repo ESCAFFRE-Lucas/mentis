@@ -5,7 +5,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { loginSchema } from './schema';
 	import { signIn } from '$lib/auth-client';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import type { PageServerLoad } from './$types';
 	import { Button } from '$lib/components/ui/button';
 
@@ -28,6 +28,7 @@
 				if (error) {
 					form.message = 'Email ou mot de passe incorrect.';
 				} else {
+					await invalidateAll();
 					await goto('/');
 				}
 			}
