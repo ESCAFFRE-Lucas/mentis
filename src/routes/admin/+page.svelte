@@ -8,7 +8,7 @@
 
 	const roleColors = { USER: 'bg-zinc-100 text-zinc-700', REVIEWER: 'bg-blue-100 text-blue-700', ADMIN: 'bg-purple-100 text-purple-700' };
 	const statusColors = { DRAFT: 'bg-zinc-100 text-zinc-700', SUBMITTED: 'bg-blue-100 text-blue-700', UNDER_REVIEW: 'bg-yellow-100 text-yellow-700', ACCEPTED: 'bg-green-100 text-green-700', REJECTED: 'bg-red-100 text-red-700' };
-	const statusLabels = { DRAFT: 'Brouillons', SUBMITTED: 'Soumis', UNDER_REVIEW: 'En révision', ACCEPTED: 'Acceptés', REJECTED: 'Rejetés' };
+	const statusLabels = { DRAFT: 'Brouillons', SUBMITTED: 'Soumis', UNDER_REVIEW: 'En révision', ACCEPTED: 'Acceptés', REJECTED: 'Rejetés', ARCHIVED: 'Archivés' };
 </script>
 
 <div class="mb-8">
@@ -16,7 +16,7 @@
 	<p class="mt-2 text-zinc-500">Gérez les utilisateurs et surveillez les articles.</p>
 </div>
 
-<div class="mb-8 grid gap-4 md:grid-cols-5">
+<div class="mb-8 grid gap-4 md:grid-cols-6">
 	{#each Object.entries(data.stats) as [status, count] (status)}
 		<a href="/admin/articles?status={status}" class="block rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
 			<div class="mb-2 text-2xl font-bold text-zinc-900">{count}</div>

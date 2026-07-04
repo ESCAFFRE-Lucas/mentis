@@ -5,7 +5,7 @@
 
 	const roleLabels = { USER: 'Utilisateur', REVIEWER: 'Reviewer', ADMIN: 'Administrateur' };
 	const roleColors = { USER: 'bg-zinc-100 text-zinc-700', REVIEWER: 'bg-blue-100 text-blue-700', ADMIN: 'bg-purple-100 text-purple-700' };
-	const statusLabels = { DRAFT: 'Brouillons', SUBMITTED: 'Soumis', UNDER_REVIEW: 'En révision', ACCEPTED: 'Acceptés', REJECTED: 'Rejetés' };
+	const statusLabels = { DRAFT: 'Brouillons', SUBMITTED: 'Soumis', UNDER_REVIEW: 'En révision', ACCEPTED: 'Acceptés', REJECTED: 'Rejetés', ARCHIVED: 'Archivés' };
 </script>
 
 <div class="mb-8">

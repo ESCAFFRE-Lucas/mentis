@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	if (sessionUser.role !== 'ADMIN') throw error(403, 'Accès réservé aux administrateurs');
 
 	const status = url.searchParams.get('status');
-	if (!status || !['DRAFT', 'SUBMITTED', 'UNDER_REVIEW', 'ACCEPTED', 'REJECTED'].includes(status)) throw redirect(302, '/admin');
+	if (!status || !['DRAFT', 'SUBMITTED', 'UNDER_REVIEW', 'ACCEPTED', 'REJECTED', 'ARCHIVED'].includes(status)) throw redirect(302, '/admin');
 
 	const articles = await db.select({
 		id: article.id,
