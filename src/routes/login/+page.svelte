@@ -6,14 +6,10 @@
 	import { loginSchema } from './schema';
 	import { signIn } from '$lib/auth-client';
 	import { goto, invalidateAll } from '$app/navigation';
-	import type { PageServerLoad } from './$types';
+	import type { PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
 
-	type PageProps = {
-		data: PageServerLoad;
-	};
-
-	let { data }: PageProps = $props();
+	let { data }: { data: PageData } = $props();
 
 	const form = superForm(data.form, {
 		SPA: true,

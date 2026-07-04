@@ -38,7 +38,7 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 		const articleId = formData.get('articleId') as string;
-		const decision = formData.get('decision') as 'ACCEPT' | 'REVISIONS' | 'REJECT';
+		const decision = formData.get('decision') as 'ACCEPT' | 'REJECT';
 		const comment = formData.get('comment') as string;
 
 		if (!articleId || !decision || !comment) return fail(400, { message: 'Données manquantes' });
@@ -47,7 +47,7 @@ export const actions: Actions = {
 		if (!existingArticle) throw error(404, 'Article non trouvé');
 		if (existingArticle.status !== 'SUBMITTED') return fail(400, { message: `L'article est en statut ${existingArticle.status}, impossible de le reviewer` });
 
-		const newStatus = decision === 'ACCEPT' ? 'ACCEPTED' : decision === 'REJECT' ? 'REJECTED' : 'UNDER_REVIEW';
+		const newStatus = decision === 'ACCEPT' ? 'ACCEPTED' : 'REJECTED';
 
 		await db.insert(review).values({ articleId, reviewerId: sessionUser.id, decision, comment });
 		await db.update(article).set({ status: newStatus, updatedAt: new Date() }).where(eq(article.id, articleId));

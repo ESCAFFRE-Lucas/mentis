@@ -10,8 +10,6 @@
 			name: string;
 		};
 		createdAt: Date;
-		likesCount: number;
-		commentsCount: number;
 	};
 
 	let { article }: { article: Article } = $props();

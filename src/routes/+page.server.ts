@@ -18,9 +18,7 @@ export const load: PageServerLoad = async (event) => {
 		title: a.title,
 		excerpt: a.excerpt,
 		createdAt: a.createdAt,
-		author: { id: a.authorId, name: a.authorName },
-		likesCount: 0,
-		commentsCount: 0
+		author: { id: a.authorId, name: a.authorName }
 	}));
 
 	return {

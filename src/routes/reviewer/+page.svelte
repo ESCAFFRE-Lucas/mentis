@@ -5,13 +5,13 @@
 
 	let { data }: { data: PageData } = $props();
 	let selectedArticleId = $state<string | null>(null);
-	let selectedDecision = $state<'ACCEPT' | 'REVISIONS' | 'REJECT' | null>(null);
+	let selectedDecision = $state<'ACCEPT' | 'REJECT' | null>(null);
 	let comment = $state('');
 
 	const openForm = (id: string) => { selectedArticleId = id; selectedDecision = null; comment = ''; };
 	const closeForm = () => { selectedArticleId = null; selectedDecision = null; comment = ''; };
 	const btnClass = (decision: string) => selectedDecision === decision ?
-		`border-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-500 bg-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-50 text-${decision === 'ACCEPT' ? 'green' : decision === 'REJECT' ? 'red' : 'yellow'}-700` :
+		`border-${decision === 'ACCEPT' ? 'green' : 'red'}-500 bg-${decision === 'ACCEPT' ? 'green' : 'red'}-50 text-${decision === 'ACCEPT' ? 'green' : 'red'}-700` :
 		'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';
 </script>
 
@@ -51,9 +51,6 @@
 								<div class="flex gap-3">
 									<button type="button" onclick={() => (selectedDecision = 'ACCEPT')} class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass('ACCEPT')}">
 										✓ Accepter
-									</button>
-									<button type="button" onclick={() => (selectedDecision = 'REVISIONS')} class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass('REVISIONS')}">
-										⚠ Révisions
 									</button>
 									<button type="button" onclick={() => (selectedDecision = 'REJECT')} class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass('REJECT')}">
 										✗ Rejeter

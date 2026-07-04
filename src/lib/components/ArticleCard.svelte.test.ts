@@ -11,10 +11,8 @@ describe('Composant ArticleCard', () => {
 		id: 'tech-123',
 		title: 'Pourquoi Svelte 5 change la donne',
 		excerpt: 'Une analyse détaillée des Runes et de la nouvelle réactivité...',
-		author: { name: 'Lucas Escaffre' },
-		createdAt: new Date('2026-03-26T10:00:00'),
-		likesCount: 42,
-		commentsCount: 7
+		author: { id: 'user-1', name: 'Lucas Escaffre' },
+		createdAt: new Date('2026-03-26T10:00:00')
 	};
 
 	it("1. Doit afficher correctement le contenu texte de l'article", () => {
@@ -23,7 +21,6 @@ describe('Composant ArticleCard', () => {
 		expect(screen.getByText('Pourquoi Svelte 5 change la donne')).toBeTruthy();
 		expect(screen.getByText(/Une analyse détaillée des Runes/i)).toBeTruthy();
 		expect(screen.getByText('Lucas Escaffre')).toBeTruthy();
-		expect(screen.getByText('42')).toBeTruthy();
 	});
 
 	it('2. Doit générer le bon lien de redirection', () => {

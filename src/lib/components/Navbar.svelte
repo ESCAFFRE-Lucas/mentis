@@ -3,9 +3,9 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { signOut } from '$lib/auth-client';
 	import { goto, invalidateAll } from '$app/navigation';
-	import type { User } from 'better-auth';
+	import type { LayoutData } from '../../routes/$types';
 
-	let { user }: { user: User | null | undefined } = $props();
+	let { user }: { user: LayoutData['user'] } = $props();
 
 	const handleLogout = async () => {
 		await signOut();
