@@ -1,0 +1,68 @@
+<script lang="ts">
+	import * as Form from '$lib/components/ui/form';
+	import { Input } from '$lib/components/ui/input';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import { Button } from '$lib/components/ui/button';
+	import { superForm } from 'sveltekit-superforms';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
+	import { articleSchema } from '../../new/schema';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	const form = superForm(data.form, {
+		validators: zod4Client(articleSchema)
+	});
+
+	const { form: formData, enhance, delayed } = form;
+</script>
+
+<div class="mx-auto max-w-2xl px-4 py-12">
+	<div class="mb-8">
+		<h1 class="text-3xl font-bold text-zinc-900">Modifier l'article</h1>
+		<p class="mt-2 text-zinc-500">Modifiez votre brouillon avant de le soumettre.</p>
+	</div>
+
+	<form method="POST" use:enhance class="space-y-6 rounded-xl border bg-white p-6 shadow-sm">
+		<Form.Field {form} name="title">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Titre de l'article</Form.Label>
+					<Input {...props} bind:value={$formData.title} placeholder="Ex: Pourquoi j'adore Svelte 5" />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		<Form.Field {form} name="excerpt">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Résumé (Visible sur l'accueil)</Form.Label>
+					<Textarea {...props} bind:value={$formData.excerpt} placeholder="En quelques mots, de quoi parle cet article ?" class="h-20 resize-none" />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		<Form.Field {form} name="content">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Contenu complet</Form.Label>
+					<Textarea {...props} bind:value={$formData.content} placeholder="Votre texte ici..." class="min-h-[300px]" />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		<div class="flex justify-end gap-4 pt-4">
+			<Button variant="outline" href="/article/{data.articleId}" type="button">Annuler</Button>
+			<Button disabled={$delayed} type="submit">
+				{#if $delayed}
+					Enregistrement...
+				{:else}
+					Enregistrer les modifications
+				{/if}
+			</Button>
+		</div>
+	</form>
+</div>

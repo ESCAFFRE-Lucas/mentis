@@ -5,7 +5,8 @@ export const articleStatusEnum = pgEnum('article_status', [
 	'SUBMITTED',
 	'UNDER_REVIEW',
 	'ACCEPTED',
-	'REJECTED'
+	'REJECTED',
+	'ARCHIVED'
 ]);
 
 export const reviewDecisionEnum = pgEnum('review_decision', ['ACCEPT', 'REVISIONS', 'REJECT']);

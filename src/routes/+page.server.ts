@@ -4,27 +4,21 @@ import { desc, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
-	const rawArticles = await db
-		.select({
-			id: article.id,
-			title: article.title,
-			excerpt: article.excerpt,
-			createdAt: article.createdAt,
-			authorName: user.name
-		})
-		.from(article)
-		.innerJoin(user, eq(article.authorId, user.id))
-		.where(eq(article.status, 'ACCEPTED'))
-		.orderBy(desc(article.createdAt));
+	const rawArticles = await db.select({
+		id: article.id,
+		title: article.title,
+		excerpt: article.excerpt,
+		createdAt: article.createdAt,
+		authorId: article.authorId,
+		authorName: user.name
+	}).from(article).innerJoin(user, eq(article.authorId, user.id)).where(eq(article.status, 'ACCEPTED')).orderBy(desc(article.createdAt));
 
 	const articles = rawArticles.map((a) => ({
 		id: a.id,
 		title: a.title,
 		excerpt: a.excerpt,
 		createdAt: a.createdAt,
-		author: { name: a.authorName },
-		likesCount: 0,
-		commentsCount: 0
+		author: { id: a.authorId, name: a.authorName }
 	}));
 
 	return {

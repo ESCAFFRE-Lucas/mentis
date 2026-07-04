@@ -3,7 +3,8 @@ export const STATUS_LABELS: Record<string, string> = {
 	SUBMITTED: 'Soumis',
 	UNDER_REVIEW: 'En révision',
 	ACCEPTED: 'Accepté',
-	REJECTED: 'Rejeté'
+	REJECTED: 'Rejeté',
+	ARCHIVED: 'Archivé'
 };
 
 export const STATUS_COLORS: Record<string, string> = {
@@ -11,7 +12,8 @@ export const STATUS_COLORS: Record<string, string> = {
 	SUBMITTED: 'bg-blue-100 text-blue-700',
 	UNDER_REVIEW: 'bg-yellow-100 text-yellow-700',
 	ACCEPTED: 'bg-green-100 text-green-700',
-	REJECTED: 'bg-red-100 text-red-700'
+	REJECTED: 'bg-red-100 text-red-700',
+	ARCHIVED: 'bg-zinc-200 text-zinc-500'
 };
 
 export const DECISION_LABELS: Record<string, string> = {

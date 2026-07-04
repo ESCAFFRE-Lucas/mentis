@@ -10,6 +10,7 @@
 	const { article, reviews, user } = data;
 	const isAuthor = user?.id === article.authorId;
 	const canSubmit = isAuthor && article.status === 'DRAFT';
+	const canRestore = isAuthor && article.status === 'ARCHIVED';
 
 	const goBack = () => {
 		if (typeof window !== 'undefined' && window.history.length > 1) {
@@ -35,7 +36,7 @@
 						</Avatar.Fallback>
 					</Avatar.Root>
 					<div class="flex-1">
-						<p class="text-sm font-semibold">{article.authorName}</p>
+						<a href="/profil/{article.authorId}" class="text-sm font-semibold hover:text-blue-600 hover:underline">{article.authorName}</a>
 						<p class="text-xs text-zinc-500">
 							{new Date(article.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
 						</p>
@@ -45,14 +46,28 @@
 							{STATUS_LABELS[article.status] || article.status}
 						</span>
 						{#if canSubmit}
+							<Button href="/article/{article.id}/edit" variant="outline" size="sm">Modifier</Button>
+							<form method="POST" action="?/archive" use:enhance>
+								<Button type="submit" variant="outline" size="sm">Archiver</Button>
+							</form>
 							<form method="POST" action="?/submit" use:enhance={() => {
 								return async ({ result }) => {
-									if (result.type === 'success') {
-										await invalidateAll();
-									}
+									if (result.type === 'success') await invalidateAll();
 								};
 							}}>
 								<Button type="submit" size="sm" class="bg-primary">Soumettre pour review</Button>
+							</form>
+						{/if}
+						{#if canRestore}
+							<form method="POST" action="?/restore" use:enhance={() => {
+								return async ({ result }) => {
+									if (result.type === 'success') {
+										await invalidateAll();
+										window.location.reload();
+									}
+								};
+							}}>
+								<Button type="submit" variant="outline" size="sm">Restaurer en brouillon</Button>
 							</form>
 						{/if}
 					</div>
