@@ -27,11 +27,17 @@
 	<Card.Header>
 		<div class="mb-2 flex items-center justify-between gap-3">
 			<div class="flex items-center gap-3">
-				<div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+				<div
+					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700"
+				>
 					{article.author.name.charAt(0).toUpperCase()}
 				</div>
 				<div class="flex flex-col">
-					<a href="/profil/{article.author.id}" class="text-sm font-medium text-zinc-900 hover:text-blue-600 hover:underline">{article.author.name}</a>
+					<a
+						href="/profil/{article.author.id}"
+						class="text-sm font-medium text-zinc-900 hover:text-blue-600 hover:underline"
+						>{article.author.name}</a
+					>
 					<span class="text-xs text-zinc-500">{formattedDate}</span>
 				</div>
 			</div>
@@ -51,5 +57,4 @@
 			{article.excerpt}
 		</p>
 	</Card.Content>
-
 </Card.Root>

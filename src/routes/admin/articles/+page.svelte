@@ -27,20 +27,39 @@
 {:else}
 	<div class="space-y-4">
 		{#each data.articles as article (article.id)}
-			<a href="/article/{article.id}" class="block rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
+			<a
+				href="/article/{article.id}"
+				class="block rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md"
+			>
 				<div class="flex items-start justify-between gap-4">
 					<div class="flex-1">
 						<h2 class="mb-2 text-xl font-bold text-zinc-900">{article.title}</h2>
 						<p class="mb-3 text-sm text-zinc-600">{article.excerpt}</p>
 						<div class="flex items-center gap-4 text-xs text-zinc-500">
 							<span>Par {article.authorName}</span>
-							<span>Créé le {new Date(article.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+							<span
+								>Créé le {new Date(article.createdAt).toLocaleDateString('fr-FR', {
+									day: 'numeric',
+									month: 'long',
+									year: 'numeric'
+								})}</span
+							>
 							{#if article.updatedAt.getTime() !== article.createdAt.getTime()}
-								<span>Mis à jour le {new Date(article.updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+								<span
+									>Mis à jour le {new Date(article.updatedAt).toLocaleDateString('fr-FR', {
+										day: 'numeric',
+										month: 'long',
+										year: 'numeric'
+									})}</span
+								>
 							{/if}
 						</div>
 					</div>
-					<span class="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium {STATUS_COLORS[article.status]}">{STATUS_LABELS[article.status]}</span>
+					<span
+						class="rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap {STATUS_COLORS[
+							article.status
+						]}">{STATUS_LABELS[article.status]}</span
+					>
 				</div>
 			</a>
 		{/each}

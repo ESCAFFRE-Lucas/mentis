@@ -70,7 +70,7 @@ export const actions: Actions = {
 		}
 
 		if (existingArticle.authorId !== sessionUser.id) {
-			throw error(403, 'Vous n\'êtes pas autorisé à soumettre cet article');
+			throw error(403, "Vous n'êtes pas autorisé à soumettre cet article");
 		}
 
 		if (existingArticle.status !== 'DRAFT') {
@@ -91,13 +91,22 @@ export const actions: Actions = {
 		if (!sessionUser) throw redirect(302, '/login');
 
 		const articleId = params.id;
-		const [existingArticle] = await db.select({ id: article.id, status: article.status, authorId: article.authorId }).from(article).where(eq(article.id, articleId)).limit(1);
+		const [existingArticle] = await db
+			.select({ id: article.id, status: article.status, authorId: article.authorId })
+			.from(article)
+			.where(eq(article.id, articleId))
+			.limit(1);
 
 		if (!existingArticle) throw error(404, 'Article non trouvé');
-		if (existingArticle.authorId !== sessionUser.id) throw error(403, 'Vous n\'êtes pas autorisé à archiver cet article');
-		if (existingArticle.status !== 'DRAFT') return fail(400, { message: 'Seuls les brouillons peuvent être archivés' });
+		if (existingArticle.authorId !== sessionUser.id)
+			throw error(403, "Vous n'êtes pas autorisé à archiver cet article");
+		if (existingArticle.status !== 'DRAFT')
+			return fail(400, { message: 'Seuls les brouillons peuvent être archivés' });
 
-		await db.update(article).set({ status: 'ARCHIVED', updatedAt: new Date() }).where(eq(article.id, articleId));
+		await db
+			.update(article)
+			.set({ status: 'ARCHIVED', updatedAt: new Date() })
+			.where(eq(article.id, articleId));
 		throw redirect(302, '/mes-articles');
 	},
 	restore: async ({ params, locals }) => {
@@ -105,13 +114,22 @@ export const actions: Actions = {
 		if (!sessionUser) throw redirect(302, '/login');
 
 		const articleId = params.id;
-		const [existingArticle] = await db.select({ id: article.id, status: article.status, authorId: article.authorId }).from(article).where(eq(article.id, articleId)).limit(1);
+		const [existingArticle] = await db
+			.select({ id: article.id, status: article.status, authorId: article.authorId })
+			.from(article)
+			.where(eq(article.id, articleId))
+			.limit(1);
 
 		if (!existingArticle) throw error(404, 'Article non trouvé');
-		if (existingArticle.authorId !== sessionUser.id) throw error(403, 'Vous n\'êtes pas autorisé à restaurer cet article');
-		if (existingArticle.status !== 'ARCHIVED') return fail(400, { message: 'Seuls les articles archivés peuvent être restaurés' });
+		if (existingArticle.authorId !== sessionUser.id)
+			throw error(403, "Vous n'êtes pas autorisé à restaurer cet article");
+		if (existingArticle.status !== 'ARCHIVED')
+			return fail(400, { message: 'Seuls les articles archivés peuvent être restaurés' });
 
-		await db.update(article).set({ status: 'DRAFT', updatedAt: new Date() }).where(eq(article.id, articleId));
+		await db
+			.update(article)
+			.set({ status: 'DRAFT', updatedAt: new Date() })
+			.where(eq(article.id, articleId));
 		return { success: true, message: 'Article restauré en brouillon' };
 	}
 };
