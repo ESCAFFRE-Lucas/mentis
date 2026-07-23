@@ -8,11 +8,20 @@
 	let selectedDecision = $state<'ACCEPT' | 'REJECT' | null>(null);
 	let comment = $state('');
 
-	const openForm = (id: string) => { selectedArticleId = id; selectedDecision = null; comment = ''; };
-	const closeForm = () => { selectedArticleId = null; selectedDecision = null; comment = ''; };
-	const btnClass = (decision: string) => selectedDecision === decision ?
-		`border-${decision === 'ACCEPT' ? 'green' : 'red'}-500 bg-${decision === 'ACCEPT' ? 'green' : 'red'}-50 text-${decision === 'ACCEPT' ? 'green' : 'red'}-700` :
-		'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';
+	const openForm = (id: string) => {
+		selectedArticleId = id;
+		selectedDecision = null;
+		comment = '';
+	};
+	const closeForm = () => {
+		selectedArticleId = null;
+		selectedDecision = null;
+		comment = '';
+	};
+	const btnClass = (decision: string) =>
+		selectedDecision === decision
+			? `border-${decision === 'ACCEPT' ? 'green' : 'red'}-500 bg-${decision === 'ACCEPT' ? 'green' : 'red'}-50 text-${decision === 'ACCEPT' ? 'green' : 'red'}-700`
+			: 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';
 </script>
 
 <div class="mb-8">
@@ -21,20 +30,26 @@
 </div>
 
 {#if data.articles.length === 0}
-	<div class="border rounded-xl bg-white p-12 text-center">
+	<div class="rounded-xl border bg-white p-12 text-center">
 		<p class="text-zinc-700">Aucun article en attente de review.</p>
 	</div>
 {:else}
 	<div class="space-y-4">
 		{#each data.articles as a (a.id)}
-			<div class="border rounded-xl bg-white p-6">
+			<div class="rounded-xl border bg-white p-6">
 				<div class="flex items-start justify-between gap-4">
 					<div class="flex-1">
 						<h2 class="mb-2 text-xl font-bold">{a.title}</h2>
 						<p class="mb-3 text-sm text-zinc-600">{a.excerpt}</p>
 						<div class="flex items-center gap-4 text-xs text-zinc-500">
 							<span>Par {a.authorName}</span>
-							<span>Soumis le {new Date(a.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+							<span
+								>Soumis le {new Date(a.createdAt).toLocaleDateString('fr-FR', {
+									day: 'numeric',
+									month: 'long',
+									year: 'numeric'
+								})}</span
+							>
 						</div>
 					</div>
 					<div class="flex gap-2">
@@ -49,10 +64,22 @@
 							<div class="mb-4">
 								<label class="mb-2 block text-sm font-medium">Décision</label>
 								<div class="flex gap-3">
-									<button type="button" onclick={() => (selectedDecision = 'ACCEPT')} class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass('ACCEPT')}">
+									<button
+										type="button"
+										onclick={() => (selectedDecision = 'ACCEPT')}
+										class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass(
+											'ACCEPT'
+										)}"
+									>
 										✓ Accepter
 									</button>
-									<button type="button" onclick={() => (selectedDecision = 'REJECT')} class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass('REJECT')}">
+									<button
+										type="button"
+										onclick={() => (selectedDecision = 'REJECT')}
+										class="flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors {btnClass(
+											'REJECT'
+										)}"
+									>
 										✗ Rejeter
 									</button>
 								</div>
@@ -60,11 +87,22 @@
 							</div>
 							<div class="mb-4">
 								<label for="comment" class="mb-2 block text-sm font-medium">Commentaire</label>
-								<textarea id="comment" name="comment" bind:value={comment} rows="4" class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Justifiez votre décision..."></textarea>
+								<textarea
+									id="comment"
+									name="comment"
+									bind:value={comment}
+									rows="4"
+									class="w-full rounded-lg border px-3 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
+									placeholder="Justifiez votre décision..."
+								></textarea>
 							</div>
 							<div class="flex justify-end gap-3">
 								<Button type="button" variant="outline" onclick={closeForm}>Annuler</Button>
-								<Button type="submit" disabled={!selectedDecision || !comment.trim()} class="bg-primary">Envoyer la review</Button>
+								<Button
+									type="submit"
+									disabled={!selectedDecision || !comment.trim()}
+									class="bg-primary">Envoyer la review</Button
+								>
 							</div>
 						</form>
 					</div>

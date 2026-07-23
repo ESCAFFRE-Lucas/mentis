@@ -1,42 +1,77 @@
-# sv
+# Mentis
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Plateforme de publication et de relecture d'articles : soumission par les auteurs, revue par les reviewers, validation par les admins.
 
-## Creating a project
+## Stack
 
-If you're seeing this, you've probably already done this step. Congrats!
+- [SvelteKit](https://kit.svelte.dev/) 2 + [Svelte](https://svelte.dev/) 5, TypeScript
+- [Drizzle ORM](https://orm.drizzle.team/) + PostgreSQL
+- [better-auth](https://www.better-auth.com/) pour l'authentification
+- [Tailwind CSS](https://tailwindcss.com/) 4 + [bits-ui](https://bits-ui.com/) / shadcn-style components
+- [Vitest](https://vitest.dev/) (unit + browser) pour les tests, coverage v8
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Fonctionnalités
 
-To recreate this project with the same configuration:
+- **Auth** : inscription / connexion (email + mot de passe, GitHub), rôles utilisateur (`USER`, `REVIEWER`, `ADMIN`)
+- **Articles** : rédaction, soumission, édition, archivage
+- **Workflow de review** : statuts `DRAFT` → `SUBMITTED` → `UNDER_REVIEW` → `ACCEPTED` / `REJECTED` (+ `ARCHIVED`), décisions de review (`ACCEPT`, `REVISIONS`, `REJECT`)
+- **Espace reviewer** : liste des articles à relire, prise de décision
+- **Espace admin** : gestion des rôles utilisateurs, vue d'ensemble des statuts d'articles
+- **Profils** : statistiques et articles par auteur
 
-```sh
-# recreate this project
-pnpm dlx sv@0.12.8 create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" tailwindcss="plugins:typography,forms" better-auth="demo:password,github" drizzle="database:postgresql+postgresql:postgres.js+docker:yes" --install pnpm .
-```
+## Prérequis
 
-## Developing
+- Node.js, [pnpm](https://pnpm.io/)
+- Docker (pour la base PostgreSQL locale)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+## Installation
 
 ```sh
-npm run build
+pnpm install
+cp .env.example .env   
+pnpm db:start           
+pnpm db:push             
 ```
 
-You can preview the production build with `npm run preview`.
+## Développement
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+pnpm dev
+
+# ou pour ouvrir automatiquement un onglet navigateur
+pnpm dev -- --open
+```
+
+## Tests
+
+```sh
+pnpm test         
+pnpm test:unit    
+pnpm test:coverage  
+```
+
+## Base de données
+
+```sh
+pnpm db:push      
+pnpm db:generate  
+pnpm db:migrate   
+pnpm db:studio   
+```
+
+## Build
+
+```sh
+pnpm build
+pnpm preview   
+```
+
+> Le déploiement utilise l'adapter Vercel (`@sveltejs/adapter-vercel`).
+
+## Qualité de code
+
+```sh
+pnpm lint     
+pnpm format   
+pnpm check   
+```

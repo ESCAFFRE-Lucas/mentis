@@ -9,19 +9,25 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (!sessionUser) throw redirect(302, '/login');
 	if (sessionUser.role !== 'ADMIN') throw error(403, 'Accès réservé aux administrateurs');
 
-	const users = await db.select({
-		id: user.id,
-		name: user.name,
-		email: user.email,
-		role: user.role,
-		reputationScore: user.reputationScore,
-		createdAt: user.createdAt
-	}).from(user).orderBy(user.createdAt);
+	const users = await db
+		.select({
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			role: user.role,
+			reputationScore: user.reputationScore,
+			createdAt: user.createdAt
+		})
+		.from(user)
+		.orderBy(user.createdAt);
 
-	const articleStats = await db.select({
-		status: article.status,
-		count: count()
-	}).from(article).groupBy(article.status);
+	const articleStats = await db
+		.select({
+			status: article.status,
+			count: count()
+		})
+		.from(article)
+		.groupBy(article.status);
 
 	const stats = { DRAFT: 0, SUBMITTED: 0, UNDER_REVIEW: 0, ACCEPTED: 0, REJECTED: 0, ARCHIVED: 0 };
 	articleStats.forEach((stat) => {
@@ -42,7 +48,8 @@ export const actions: Actions = {
 		const newRole = formData.get('role') as string;
 
 		if (!userId || !newRole) return fail(400, { message: 'Données manquantes' });
-		if (!['USER', 'REVIEWER', 'ADMIN'].includes(newRole)) return fail(400, { message: 'Rôle invalide' });
+		if (!['USER', 'REVIEWER', 'ADMIN'].includes(newRole))
+			return fail(400, { message: 'Rôle invalide' });
 
 		await db.update(user).set({ role: newRole }).where(eq(user.id, userId));
 		return { success: true, message: `Rôle mis à jour avec succès` };

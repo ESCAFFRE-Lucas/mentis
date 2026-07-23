@@ -18,12 +18,16 @@
 		<h1 class="text-3xl font-bold">Rédiger un article</h1>
 		<p class="mt-2 text-zinc-500">Partagez vos connaissances avec la communauté Mentis.</p>
 	</div>
-	<form method="POST" use:enhance class="space-y-6 border rounded-xl bg-white p-6">
+	<form method="POST" use:enhance class="space-y-6 rounded-xl border bg-white p-6">
 		<Form.Field {form} name="title">
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Titre de l'article</Form.Label>
-					<Input {...props} bind:value={$formData.title} placeholder="Ex: Pourquoi j'adore Svelte 5" />
+					<Input
+						{...props}
+						bind:value={$formData.title}
+						placeholder="Ex: Pourquoi j'adore Svelte 5"
+					/>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -32,7 +36,12 @@
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Résumé (Visible sur l'accueil)</Form.Label>
-					<Textarea {...props} bind:value={$formData.excerpt} placeholder="En quelques mots, de quoi parle cet article ?" class="h-20 resize-none" />
+					<Textarea
+						{...props}
+						bind:value={$formData.excerpt}
+						placeholder="En quelques mots, de quoi parle cet article ?"
+						class="h-20 resize-none"
+					/>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -41,7 +50,12 @@
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>Contenu complet</Form.Label>
-					<Textarea {...props} bind:value={$formData.content} placeholder="Votre texte ici..." class="min-h-[300px]" />
+					<Textarea
+						{...props}
+						bind:value={$formData.content}
+						placeholder="Votre texte ici..."
+						class="min-h-[300px]"
+					/>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -49,7 +63,7 @@
 		<div class="flex justify-end gap-4 pt-4">
 			<Button variant="outline" href="/" type="button">Annuler</Button>
 			<Button disabled={$delayed} type="submit">
-				{$delayed ? 'Publication en cours...' : 'Publier l\'article'}
+				{$delayed ? 'Publication en cours...' : "Publier l'article"}
 			</Button>
 		</div>
 	</form>

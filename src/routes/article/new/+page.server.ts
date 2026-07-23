@@ -27,12 +27,15 @@ export const actions: Actions = {
 
 		let newArticleId: string;
 		try {
-			const [inserted] = await db.insert(article).values({
-				title: form.data.title,
-				excerpt: form.data.excerpt,
-				content: form.data.content,
-				authorId: sessionUser.id
-			}).returning({ id: article.id });
+			const [inserted] = await db
+				.insert(article)
+				.values({
+					title: form.data.title,
+					excerpt: form.data.excerpt,
+					content: form.data.content,
+					authorId: sessionUser.id
+				})
+				.returning({ id: article.id });
 			newArticleId = inserted.id;
 		} catch (error) {
 			console.error("Erreur d'insertion DB:", error);

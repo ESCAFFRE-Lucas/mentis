@@ -33,9 +33,7 @@
 				{/if}
 
 				{#if user.role === 'ADMIN'}
-					<Button href="/admin" variant="outline" class="hidden sm:flex">
-						Admin
-					</Button>
+					<Button href="/admin" variant="outline" class="hidden sm:flex">Admin</Button>
 				{/if}
 
 				<DropdownMenu.Root>
