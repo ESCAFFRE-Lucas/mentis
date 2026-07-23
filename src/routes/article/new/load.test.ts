@@ -1,4 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { mockDb } from '$lib/test-utils/mock-db';
+
+vi.mock('$lib/server/db', () => ({ db: mockDb }));
 
 import { load } from './+page.server';
 
