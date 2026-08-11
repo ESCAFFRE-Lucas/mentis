@@ -15,7 +15,7 @@ export const GET: RequestHandler = async () => {
 			},
 			{ status: 200 }
 		);
-	} catch (error) {
+	} catch {
 		return json(
 			{
 				status: 'error',
