@@ -1,10 +1,18 @@
+import { sentrySvelteKit } from '@sentry/sveltekit';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [
+		sentrySvelteKit({
+			org: 'mentis-l4',
+			project: 'javascript-sveltekit'
+		}),
+		tailwindcss(),
+		sveltekit()
+	],
 	test: {
 		expect: { requireAssertions: true },
 		coverage: {

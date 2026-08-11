@@ -76,6 +76,7 @@
 		]
 	},
 	"dependencies": {
+		"@sentry/sveltekit": "^10.70.0",
 		"@vercel/analytics": "^2.0.1",
 		"@vercel/speed-insights": "^2.0.0",
 		"zod": "^4.3.6"
