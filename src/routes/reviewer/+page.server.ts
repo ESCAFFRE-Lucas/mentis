@@ -1,7 +1,7 @@
 import { redirect, error, fail } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { article, user, review } from '$lib/server/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, and, ne } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		})
 		.from(article)
 		.innerJoin(user, eq(article.authorId, user.id))
-		.where(eq(article.status, 'SUBMITTED'))
+		.where(and(eq(article.status, 'SUBMITTED'), ne(article.authorId, sessionUser.id)))
 		.orderBy(desc(article.createdAt));
 
 	return { articles: submittedArticles, user: sessionUser };
@@ -50,15 +50,18 @@ export const actions: Actions = {
 		if (!articleId || !decision || !comment) return fail(400, { message: 'Données manquantes' });
 
 		const [existingArticle] = await db
-			.select({ id: article.id, status: article.status })
+			.select({ id: article.id, status: article.status, authorId: article.authorId })
 			.from(article)
 			.where(eq(article.id, articleId))
 			.limit(1);
+
 		if (!existingArticle) throw error(404, 'Article non trouvé');
-		if (existingArticle.status !== 'SUBMITTED')
-			return fail(400, {
-				message: `L'article est en statut ${existingArticle.status}, impossible de le reviewer`
-			});
+
+		if (existingArticle.authorId === sessionUser.id) {
+			throw error(403, 'Vous ne pouvez pas reviewer votre propre article');
+		}
+
+		if (existingArticle.status !== 'SUBMITTED') return fail(400, { message: `L'article est en statut ${existingArticle.status}, impossible de le reviewer` });
 
 		const newStatus = decision === 'ACCEPT' ? 'ACCEPTED' : 'REJECTED';
 
