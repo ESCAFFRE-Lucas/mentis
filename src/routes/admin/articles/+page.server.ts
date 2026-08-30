@@ -1,8 +1,8 @@
 import { db } from '$lib/server/db';
 import { article, user } from '$lib/server/db/schema';
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 const STATUSES = [
 	'DRAFT',
@@ -40,4 +40,25 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		.orderBy(article.updatedAt);
 
 	return { articles, status };
+};
+
+export const actions: Actions = {
+	deleteArticle: async ({ request, locals }) => {
+		const sessionUser = locals.user;
+		if (!sessionUser) throw redirect(302, '/login');
+		if (sessionUser.role !== 'ADMIN') throw error(403, 'Accès réservé aux administrateurs');
+
+		const formData = await request.formData();
+		const articleId = formData.get('articleId') as string;
+		if (!articleId) return fail(400, { message: 'Données manquantes' });
+
+		const [existingArticle] = await db
+			.select({ id: article.id })
+			.from(article)
+			.where(eq(article.id, articleId));
+		if (!existingArticle) return fail(404, { message: 'Article introuvable' });
+
+		await db.delete(article).where(eq(article.id, articleId));
+		return { success: true, message: 'Article supprimé avec succès' };
+	}
 };

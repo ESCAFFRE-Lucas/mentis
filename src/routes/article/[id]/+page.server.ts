@@ -69,7 +69,7 @@ export const actions: Actions = {
 			throw error(404, 'Article non trouvé');
 		}
 
-		if (existingArticle.authorId !== sessionUser.id) {
+		if (existingArticle.authorId !== sessionUser.id && sessionUser.role !== 'ADMIN') {
 			throw error(403, "Vous n'êtes pas autorisé à soumettre cet article");
 		}
 
@@ -98,7 +98,7 @@ export const actions: Actions = {
 			.limit(1);
 
 		if (!existingArticle) throw error(404, 'Article non trouvé');
-		if (existingArticle.authorId !== sessionUser.id)
+		if (existingArticle.authorId !== sessionUser.id && sessionUser.role !== 'ADMIN')
 			throw error(403, "Vous n'êtes pas autorisé à archiver cet article");
 		if (existingArticle.status !== 'DRAFT')
 			return fail(400, { message: 'Seuls les brouillons peuvent être archivés' });
@@ -121,7 +121,7 @@ export const actions: Actions = {
 			.limit(1);
 
 		if (!existingArticle) throw error(404, 'Article non trouvé');
-		if (existingArticle.authorId !== sessionUser.id)
+		if (existingArticle.authorId !== sessionUser.id && sessionUser.role !== 'ADMIN')
 			throw error(403, "Vous n'êtes pas autorisé à restaurer cet article");
 		if (existingArticle.status !== 'ARCHIVED')
 			return fail(400, { message: 'Seuls les articles archivés peuvent être restaurés' });
@@ -131,5 +131,22 @@ export const actions: Actions = {
 			.set({ status: 'DRAFT', updatedAt: new Date() })
 			.where(eq(article.id, articleId));
 		return { success: true, message: 'Article restauré en brouillon' };
+	},
+	deleteArticle: async ({ params, locals }) => {
+		const sessionUser = locals.user;
+		if (!sessionUser) throw redirect(302, '/login');
+		if (sessionUser.role !== 'ADMIN') throw error(403, 'Accès réservé aux administrateurs');
+
+		const articleId = params.id;
+		const [existingArticle] = await db
+			.select({ id: article.id })
+			.from(article)
+			.where(eq(article.id, articleId))
+			.limit(1);
+
+		if (!existingArticle) throw error(404, 'Article non trouvé');
+
+		await db.delete(article).where(eq(article.id, articleId));
+		throw redirect(302, '/admin');
 	}
 };
