@@ -12,10 +12,12 @@
 	} from '$lib/utils/status';
 
 	let { data }: { data: PageData } = $props();
-	const { article, reviews, user } = data;
-	const isAuthor = user?.id === article.authorId;
-	const canSubmit = isAuthor && article.status === 'DRAFT';
-	const canRestore = isAuthor && article.status === 'ARCHIVED';
+	let article = $derived(data.article);
+	let reviews = $derived(data.reviews);
+	let user = $derived(data.user);
+	let isAuthor = $derived(user?.id === article.authorId);
+	let canSubmit = $derived(isAuthor && article.status === 'DRAFT');
+	let canRestore = $derived(isAuthor && article.status === 'ARCHIVED');
 
 	const goBack = () => {
 		if (typeof window !== 'undefined' && window.history.length > 1) {
