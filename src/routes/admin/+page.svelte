@@ -73,9 +73,35 @@
 			</thead>
 			<tbody class="divide-y">
 				{#each data.users as user (user.id)}
+					{@const isSelf = user.id === data.currentUserId}
 					<tr class="hover:bg-zinc-50">
-						<td class="px-6 py-4 text-sm font-medium text-zinc-900">{user.name}</td>
-						<td class="px-6 py-4 text-sm text-zinc-700">{user.email}</td>
+						<td class="px-6 py-4 text-sm font-medium text-zinc-900" colspan="2">
+							<form
+								method="POST"
+								action="?/updateUser"
+								use:enhance={() => {
+									return async ({ result }) => {
+										if (result.type === 'success') await invalidateAll();
+									};
+								}}
+								class="flex gap-1"
+							>
+								<input type="hidden" name="userId" value={user.id} />
+								<input
+									name="name"
+									value={user.name}
+									class="w-28 rounded border px-2 py-1 text-xs"
+								/>
+								<input
+									name="email"
+									value={user.email}
+									class="w-40 rounded border px-2 py-1 text-xs"
+								/>
+								<Button type="submit" size="sm" variant="outline" class="h-7 text-xs"
+									>Enregistrer</Button
+								>
+							</form>
+						</td>
 						<td class="px-6 py-4">
 							<span
 								class="inline-block rounded-full px-2.5 py-1 text-xs font-medium {roleColors[
@@ -90,26 +116,54 @@
 							>{new Date(user.createdAt).toLocaleDateString('fr-FR')}</td
 						>
 						<td class="px-6 py-4">
-							<form
-								method="POST"
-								action="?/updateRole"
-								use:enhance={() => {
-									return async ({ result }) => {
-										if (result.type === 'success') await invalidateAll();
-									};
-								}}
-								class="flex gap-2"
-							>
-								<input type="hidden" name="userId" value={user.id} />
-								<select name="role" class="rounded border px-2 py-1 text-xs" value={user.role}>
-									<option value="USER">USER</option>
-									<option value="REVIEWER">REVIEWER</option>
-									<option value="ADMIN">ADMIN</option>
-								</select>
-								<Button type="submit" size="sm" variant="outline" class="h-7 text-xs"
-									>Modifier</Button
+							<div class="flex flex-col gap-2">
+								<form
+									method="POST"
+									action="?/updateRole"
+									use:enhance={() => {
+										return async ({ result }) => {
+											if (result.type === 'success') await invalidateAll();
+										};
+									}}
+									class="flex gap-2"
 								>
-							</form>
+									<input type="hidden" name="userId" value={user.id} />
+									<select
+										name="role"
+										class="rounded border px-2 py-1 text-xs"
+										value={user.role}
+										disabled={isSelf}
+									>
+										<option value="USER">USER</option>
+										<option value="REVIEWER">REVIEWER</option>
+										<option value="ADMIN">ADMIN</option>
+									</select>
+									<Button
+										type="submit"
+										size="sm"
+										variant="outline"
+										class="h-7 text-xs"
+										disabled={isSelf}>Rôle</Button
+									>
+								</form>
+								{#if !isSelf}
+									<form
+										method="POST"
+										action="?/deleteUser"
+										use:enhance={({ cancel }) => {
+											if (!confirm(`Supprimer définitivement ${user.name} ?`)) cancel();
+											return async ({ result }) => {
+												if (result.type === 'success') await invalidateAll();
+											};
+										}}
+									>
+										<input type="hidden" name="userId" value={user.id} />
+										<Button type="submit" size="sm" variant="destructive" class="h-7 text-xs"
+											>Supprimer</Button
+										>
+									</form>
+								{/if}
+							</div>
 						</td>
 					</tr>
 				{/each}

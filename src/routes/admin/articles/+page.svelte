@@ -2,6 +2,8 @@
 	import type { PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
 	import { STATUS_LABELS, STATUS_COLORS } from '$lib/utils/status';
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -27,12 +29,9 @@
 {:else}
 	<div class="space-y-4">
 		{#each data.articles as article (article.id)}
-			<a
-				href="/article/{article.id}"
-				class="block rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md"
-			>
+			<div class="rounded-xl border bg-white p-6 shadow-sm transition-all hover:shadow-md">
 				<div class="flex items-start justify-between gap-4">
-					<div class="flex-1">
+					<a href="/article/{article.id}" class="flex-1">
 						<h2 class="mb-2 text-xl font-bold text-zinc-900">{article.title}</h2>
 						<p class="mb-3 text-sm text-zinc-600">{article.excerpt}</p>
 						<div class="flex items-center gap-4 text-xs text-zinc-500">
@@ -54,14 +53,29 @@
 								>
 							{/if}
 						</div>
+					</a>
+					<div class="flex items-center gap-3">
+						<span
+							class="rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap {STATUS_COLORS[
+								article.status
+							]}">{STATUS_LABELS[article.status]}</span
+						>
+						<form
+							method="POST"
+							action="?/deleteArticle"
+							use:enhance={({ cancel }) => {
+								if (!confirm(`Supprimer définitivement "${article.title}" ?`)) cancel();
+								return async ({ result }) => {
+									if (result.type === 'success') await invalidateAll();
+								};
+							}}
+						>
+							<input type="hidden" name="articleId" value={article.id} />
+							<Button type="submit" variant="destructive" size="sm">Supprimer</Button>
+						</form>
 					</div>
-					<span
-						class="rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap {STATUS_COLORS[
-							article.status
-						]}">{STATUS_LABELS[article.status]}</span
-					>
 				</div>
-			</a>
+			</div>
 		{/each}
 	</div>
 {/if}

@@ -16,8 +16,9 @@
 	let reviews = $derived(data.reviews);
 	let user = $derived(data.user);
 	let isAuthor = $derived(user?.id === article.authorId);
-	let canSubmit = $derived(isAuthor && article.status === 'DRAFT');
-	let canRestore = $derived(isAuthor && article.status === 'ARCHIVED');
+	let canManage = $derived(isAuthor || user?.role === 'ADMIN');
+	let canSubmit = $derived(canManage && article.status === 'DRAFT');
+	let canRestore = $derived(canManage && article.status === 'ARCHIVED');
 
 	const goBack = () => {
 		if (typeof window !== 'undefined' && window.history.length > 1) {
@@ -64,8 +65,11 @@
 							{STATUS_LABELS[article.status] || article.status}
 						</span>
 						{#if canSubmit}
-							<Button href="/article/{article.id}/edit" variant="outline" size="sm">Modifier</Button
-							>
+							{#if isAuthor}
+								<Button href="/article/{article.id}/edit" variant="outline" size="sm"
+									>Modifier</Button
+								>
+							{/if}
 							<form method="POST" action="?/archive" use:enhance>
 								<Button type="submit" variant="outline" size="sm">Archiver</Button>
 							</form>
@@ -95,6 +99,17 @@
 								}}
 							>
 								<Button type="submit" variant="outline" size="sm">Restaurer en brouillon</Button>
+							</form>
+						{/if}
+						{#if user?.role === 'ADMIN'}
+							<form
+								method="POST"
+								action="?/deleteArticle"
+								use:enhance={({ cancel }) => {
+									if (!confirm('Supprimer définitivement cet article ?')) cancel();
+								}}
+							>
+								<Button type="submit" variant="destructive" size="sm">Supprimer</Button>
 							</form>
 						{/if}
 					</div>
